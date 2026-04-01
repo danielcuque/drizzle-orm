@@ -347,7 +347,11 @@ export const introspectMysql = async (
 		progress,
 		fromMysqlDatabase(db, database, filter, (stage, count, status) => {
 			progress.update(stage, count, status);
-		}),
+		}).catch((err) => {
+			console.error('\nIntrospection failed with error:');
+      		console.error(err);
+			throw err; 
+    }),
 	);
 
 	const schema = { id: originUUID, prevId: '', ...res } as MySqlSchema;
